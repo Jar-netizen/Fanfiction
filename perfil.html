@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>プロフィール | Perfil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #0a0a0f;
+            color: #e0e0e0;
+            font-family: 'Zen Kaku Gothic New', sans-serif;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+        .perfil-card {
+            background: #1a1a2e;
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #FF6B35;
+            text-align: center;
+        }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF6B35, #4DABF7);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+        h1 { color: #FFD700; }
+        .dato { 
+            background: #0a0a0f; 
+            padding: 10px; 
+            margin: 10px 0; 
+            border-radius: 8px;
+            border-left: 3px solid #4DABF7;
+        }
+    </style>
+</head>
+<body>
+    <!-- PEGA AQUÍ EL NAVBAR DE ARRIBA -->
+    
+    <div class="container">
+        <div class="perfil-card">
+            <div class="avatar">⚽</div>
+            <h1 id="apodoPerfil"></h1>
+            <div class="dato"><b>ユーザー名:</b> <span id="userPerfil"></span></div>
+            <div class="dato"><b>メール:</b> <span id="correoPerfil"></span></div>
+            <div class="dato"><b>代名詞:</b> <span id="generoPerfil"></span></div>
+            <div class="dato"><b>作品数:</b> <span id="numFics">0</span> fanfics</div>
+        </div>
+    </div>
+
+    <script>
+        let usuario = JSON.parse(localStorage.getItem('usuarioActual'));
+        document.getElementById('apodoPerfil').innerText = usuario.apodo;
+        document.getElementById('userPerfil').innerText = usuario.user;
+        document.getElementById('correoPerfil').innerText = usuario.correo;
+        document.getElementById('generoPerfil').innerText = usuario.genero;
+        
+        // Cuenta fics del usuario
+        let todosFics = JSON.parse(localStorage.getItem('misFics')) || [];
+        let misFics = todosFics.filter(fic => fic.autor === usuario.user);
+        document.getElementById('numFics').innerText = misFics.length;
+    </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>読む | Leer - Fanfic Reader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #0a0a0f;
+            color: #e0e0e0;
+            font-family: 'Zen Kaku Gothic New', sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.8;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #1a1a2e;
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid #4DABF7;
+            box-shadow: 0 0 30px rgba(77, 171, 247, 0.2);
+        }
+        .nav a {
+            color: #FF6B35;
+            text-decoration: none;
+            background: #0a0a0f;
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 1px solid #FF6B35;
+        }
+        h1 {
+            color: #FFD700;
+            text-shadow: 0 0 10px #FFD700;
+            border-bottom: 2px solid #4DABF7;
+            padding-bottom: 15px;
+            margin-bottom: 10px;
+        }
+        .meta {
+            color: #4DABF7;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        #textoFic {
+            white-space: pre-wrap;
+            font-size: 16px;
+            text-align: justify;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="biblioteca.html">← 図書館に戻る | Volver</a>
+        </div>
+        
+        <h1 id="tituloFic"></h1>
+        <div class="meta" id="metaFic"></div>
+        <div id="textoFic"></div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            let biblioteca = JSON.parse(localStorage.getItem('misFics'));
+            let index = localStorage.getItem('ficActual');
+            
+            if (!biblioteca || index === null) {
+                window.location.href = 'biblioteca.html';
+                return;
+            }
+            
+            let fic = biblioteca[index];
+            document.getElementById('tituloFic').innerText = fic.titulo;
+            document.getElementById('metaFic').innerText = `💙 ${fic.ship || 'Sin ship'} | 📅 ${fic.fecha}`;
+            document.getElementById('textoFic').innerText = fic.texto;
+            document.title = fic.titulo + ' | Leer';
+        };
+    </script>
+</body>
+</html>

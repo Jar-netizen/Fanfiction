@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>図書館 | Biblioteca - Fanfic Reader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #0a0a0f;
+            background-image: radial-gradient(circle at 80% 20%, #1a1a2e 0%, transparent 50%);
+            color: #e0e0e0;
+            font-family: 'Zen Kaku Gothic New', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #4DABF7;
+            text-shadow: 0 0 10px #4DABF7, 0 0 20px #4DABF7;
+            text-align: center;
+            font-size: 36px;
+        }
+        .nav {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .nav a {
+            color: #FF6B35;
+            text-decoration: none;
+            background: #1a1a2e;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid #FF6B35;
+            transition: 0.3s;
+        }
+        .nav a:hover {
+            background: #FF6B35;
+            color: #0a0a0f;
+            box-shadow: 0 0 15px #FF6B35;
+        }
+        .estanteria {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .libro {
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            border: 2px solid #4DABF7;
+            border-radius: 15px;
+            padding: 20px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .libro::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(77, 171, 247, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: 0.5s;
+        }
+        .libro:hover::before {
+            left: 100%;
+        }
+        .libro:hover {
+            transform: translateY(-8px);
+            border-color: #FF6B35;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+        .libro h3 {
+            color: #FFD700;
+            margin: 0 0 10px 0;
+            font-size: 18px;
+        }
+        .libro p {
+            color: #999;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        .botones {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        .boton-leer {
+            background: #4DABF7;
+            color: #0a0a0f;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+        }
+        .boton-borrar {
+            background: #ff4757;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .vacio {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="escribir.html">✍️ 書く | Escribir Nuevo</a>
+        </div>
+        
+        <h1>📚 図書館 | Mi Biblioteca Otaku</h1>
+        
+        <div class="estanteria" id="listaFics"></div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            let biblioteca = JSON.parse(localStorage.getItem('misFics')) || [];
+            let lista = document.getElementById('listaFics');
+
+            if (biblioteca.length == 0) {
+                lista.innerHTML = '<p class="vacio">まだ何もない... No hay fanfics aún 😿<br>¡Ve a escribir el primero!</p>';
+                return;
+            }
+
+            biblioteca.forEach(function(fic, index) {
+                lista.innerHTML += `
+                    <div class="libro">
+                        <h3>${fic.titulo}</h3>
+                        <p><b>💙 Ship:</b> ${fic.ship || 'Sin ship'}</p>
+                        <p><b>📅 Fecha:</b> ${fic.fecha}</p>
+                        <div class="botones">
+                            <button class="boton-leer" onclick="leer(${index})">読む | Leer</button>
+                            <button class="boton-borrar" onclick="borrar(${index})">削除</button>
+                        </div>
+                    </div>
+                `;
+            });
+        };
+
+        function leer(index) {
+            localStorage.setItem('ficActual', index);
+            window.location.href = 'leer.html';
+        }
+
+        function borrar(index) {
+            if (confirm('本当に削除しますか？¿Seguro que lo borras?')) {
+                let biblioteca = JSON.parse(localStorage.getItem('misFics'));
+                biblioteca.splice(index, 1);
+                localStorage.setItem('misFics', JSON.stringify(biblioteca));
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

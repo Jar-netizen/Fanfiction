@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>ログイン | Fanfic Reader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #0a0a0f;
+            background-image: radial-gradient(circle at 20% 50%, #1a1a2e 0%, transparent 50%);
+            color: #e0e0e0;
+            font-family: 'Zen Kaku Gothic New', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .login-box {
+            background: #1a1a2e;
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid #4DABF7;
+            box-shadow: 0 0 30px rgba(77, 171, 247, 0.3);
+            width: 90%;
+            max-width: 400px;
+        }
+        h1 {
+            color: #FFD700;
+            text-align: center;
+            text-shadow: 0 0 10px #FFD700;
+            margin-bottom: 30px;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            background: #0a0a0f;
+            border: 1px solid #4DABF7;
+            color: white;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background: linear-gradient(90deg, #FF6B35, #4DABF7);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .toggle {
+            text-align: center;
+            margin-top: 20px;
+            color: #999;
+        }
+        .toggle span {
+            color: #4DABF7;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .oculto { display: none; }
+        label { color: #FFD700; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h1>📚 Fanfic Reader</h1>
+        
+        <!-- FORM LOGIN -->
+        <div id="formLogin">
+            <input type="text" id="loginUser" placeholder="Nombre de usuario">
+            <input type="password" id="loginPass" placeholder="Contraseña">
+            <button onclick="iniciarSesion()">入る | Entrar</button>
+            <div class="toggle">¿No tienes cuenta? <span onclick="mostrarRegistro()">Regístrate</span></div>
+        </div>
+
+        <!-- FORM REGISTRO -->
+        <div id="formRegistro" class="oculto">
+            <label>メール | Correo:</label>
+            <input type="email" id="regCorreo" placeholder="tu@email.com">
+            
+            <label>ユーザー名 | Nombre de usuario:</label>
+            <input type="text" id="regUser" placeholder="Sin espacios">
+            
+            <label>ニックネーム | Apodo:</label>
+            <input type="text" id="regApodo" placeholder="Como te dicen">
+            
+            <label>代名詞 | Género/Pronombres:</label>
+            <select id="regGenero">
+                <option value="él">Él/He</option>
+                <option value="ella">Ella/She</option>
+                <option value="elle">Elle/They</option>
+                <option value="otro">Otro</option>
+            </select>
+            
+            <label>パスワード | Contraseña:</label>
+            <input type="password" id="regPass" placeholder="Mínimo 4 caracteres">
+            
+            <button onclick="registrar()">登録 | Crear Cuenta</button>
+            <div class="toggle">¿Ya tienes cuenta? <span onclick="mostrarLogin()">Inicia sesión</span></div>
+        </div>
+    </div>
+
+    <script>
+        // Si ya inició sesión, lo mandamos a biblioteca
+        if (localStorage.getItem('usuarioActual')) {
+            window.location.href = 'biblioteca.html';
+        }
+
+        function mostrarRegistro() {
+            document.getElementById('formLogin').classList.add('oculto');
+            document.getElementById('formRegistro').classList.remove('oculto');
+        }
+
+        function mostrarLogin() {
+            document.getElementById('formRegistro').classList.add('oculto');
+            document.getElementById('formLogin').classList.remove('oculto');
+        }
+
+        function registrar() {
+            let correo = document.getElementById('regCorreo').value;
+            let user = document.getElementById('regUser').value;
+            let apodo = document.getElementById('regApodo').value;
+            let genero = document.getElementById('regGenero').value;
+            let pass = document.getElementById('regPass').value;
+
+            if (!correo || !user || !apodo || !pass) {
+                alert('馬鹿！Llena todos los campos');
+                return;
+            }
+            if (pass.length < 4) {
+                alert('Contraseña muy corta, mínimo 4');
+                return;
+            }
+
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            
+            // Revisa si el user ya existe
+            if (usuarios.find(u => u.user === user)) {
+                alert('Ese usuario ya existe. Elige otro');
+                return;
+            }
+
+            usuarios.push({ correo, user, apodo, genero, pass });
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+            
+            alert('登録完了！Cuenta creada. Ahora inicia sesión');
+            mostrarLogin();
+        }
+
+        function iniciarSesion() {
+            let user = document.getElementById('loginUser').value;
+            let pass = document.getElementById('loginPass').value;
+            
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            let usuario = usuarios.find(u => u.user === user && u.pass === pass);
+
+            if (usuario) {
+                localStorage.setItem('usuarioActual', JSON.stringify(usuario));
+                alert(`ようこそ ${usuario.apodo}！`);
+                window.location.href = 'biblioteca.html';
+            } else {
+                alert('Usuario o contraseña incorrectos');
+            }
+        }
+    </script>
+</body>
+</html>

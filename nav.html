@@ -1,0 +1,62 @@
+<style>
+    .navbar {
+        background: #1a1a2e;
+        padding: 15px 20px;
+        border-bottom: 2px solid #4DABF7;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .nav-botones a {
+        color: #e0e0e0;
+        text-decoration: none;
+        padding: 8px 15px;
+        margin: 0 5px;
+        border-radius: 8px;
+        border: 1px solid #4DABF7;
+        transition: 0.3s;
+    }
+    .nav-botones a:hover {
+        background: #4DABF7;
+        color: #0a0a0f;
+        box-shadow: 0 0 15px #4DABF7;
+    }
+    .nav-user {
+        color: #FFD700;
+    }
+    .nav-user span {
+        cursor: pointer;
+        color: #ff4757;
+        margin-left: 15px;
+    }
+</style>
+
+<div class="navbar">
+    <div class="nav-botones">
+        <a href="biblioteca.html">📚 図書館</a>
+        <a href="escribir.html">✍️ 書く</a>
+        <a href="perfil.html">👤 プロフィール</a>
+    </div>
+    <div class="nav-user">
+        ようこそ <b id="nombreUserNav"></b>
+        <span onclick="cerrarSesion()">ログアウト</span>
+    </div>
+</div>
+
+<script>
+    // Revisa si hay sesión, si no, lo patea al login
+    let usuarioActual = JSON.parse(localStorage.getItem('usuarioActual'));
+    if (!usuarioActual) {
+        window.location.href = 'index.html';
+    } else {
+        document.getElementById('nombreUserNav').innerText = usuarioActual.apodo;
+    }
+
+    function cerrarSesion() {
+        localStorage.removeItem('usuarioActual');
+        window.location.href = 'index.html';
+    }
+</script>

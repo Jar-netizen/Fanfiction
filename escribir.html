@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>書く | Escribir - Fanfic Reader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #0a0a0f;
+            background-image: radial-gradient(circle at 20% 50%, #1a1a2e 0%, transparent 50%),
+                              radial-gradient(circle at 80% 80%, #16213e 0%, transparent 50%);
+            color: #e0e0e0;
+            font-family: 'Zen Kaku Gothic New', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #FF6B35;
+            text-shadow: 0 0 10px #FF6B35, 0 0 20px #FF6B35;
+            border-bottom: 2px solid #4DABF7;
+            padding-bottom: 10px;
+        }
+        .nav {
+            margin-bottom: 30px;
+        }
+        .nav a {
+            color: #4DABF7;
+            text-decoration: none;
+            background: #1a1a2e;
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 1px solid #4DABF7;
+            transition: 0.3s;
+        }
+        .nav a:hover {
+            background: #4DABF7;
+            color: #0a0a0f;
+            box-shadow: 0 0 15px #4DABF7;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #1a1a2e;
+            border: 1px solid #4DABF7;
+            color: white;
+            border-radius: 8px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #FF6B35;
+            box-shadow: 0 0 10px #FF6B35;
+        }
+        button {
+            background: linear-gradient(90deg, #FF6B35, #4DABF7);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #FF6B35;
+        }
+        .label {
+            color: #FFD700;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="biblioteca.html">📚 図書館 | Biblioteca</a>
+        </div>
+        
+        <h1>✍️ 書く | Escribir Nuevo Fanfic</h1>
+        
+        <p class="label">タイトル | Título:</p>
+        <input type="text" id="titulo" placeholder="Ej: Isagi x Bachira: Gol al Corazón">
+        
+        <p class="label">カップリング | Ship:</p>
+        <input type="text" id="ship" placeholder="Ej: Isagi x Bachira 🧡💙">
+        
+        <p class="label">物語 | Historia:</p>
+        <textarea id="texto" rows="15" placeholder="Era una noche de insomnio cuando..."></textarea>
+        
+        <button onclick="guardar()">保存 | Guardar Fanfic</button>
+    </div>
+
+    <script>
+        function guardar() {
+            let titulo = document.getElementById('titulo').value;
+            let ship = document.getElementById('ship').value;
+            let texto = document.getElementById('texto').value;
+
+            if (titulo == '' || texto == '') {
+                alert('馬鹿！Pon título y texto');
+                return;
+            }
+
+            let biblioteca = JSON.parse(localStorage.getItem('misFics')) || [];
+            biblioteca.push({
+                titulo: titulo,
+                ship: ship,
+                texto: texto,
+                fecha: new Date().toLocaleDateString('es-ES')
+            });
+            localStorage.setItem('misFics', JSON.stringify(biblioteca));
+
+            alert('保存完了！Fanfic guardado ⚽');
+            document.getElementById('titulo').value = '';
+            document.getElementById('ship').value = '';
+            document.getElementById('texto').value = '';
+        }
+    </script>
+</body>
+</html>
